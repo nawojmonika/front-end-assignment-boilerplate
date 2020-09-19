@@ -15,6 +15,7 @@ const configuration = {
     inline: true,
     overlay: true,
     writeToDisk: false,
+    open: true,
   },
   devtool: 'cheap-module-eval-source-map',
   entry: {
