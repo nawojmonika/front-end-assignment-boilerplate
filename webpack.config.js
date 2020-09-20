@@ -91,7 +91,7 @@ const configuration = {
     new HtmlWebpackPlugin({
       inject: true,
       minify: false,
-      template: 'src/index.html',
+      template: 'src/index.tsx',
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
