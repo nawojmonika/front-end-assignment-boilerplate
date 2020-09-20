@@ -19,7 +19,7 @@ const configuration = {
   },
   devtool: 'cheap-module-eval-source-map',
   entry: {
-    app: './src/index.ts',
+    app: './src/index.tsx',
   },
   mode: 'development',
   module: {
@@ -32,7 +32,7 @@ const configuration = {
         test: /\.html$/u,
       },
       {
-        test: /\.ts$/u,
+        test: /\.tsx?$/u,
         use: [
           {
             loader: 'ts-loader',
@@ -46,9 +46,9 @@ const configuration = {
         ],
       },
       {
-        test: /\.css$/u,
+        test: /\.scss$/u,
         use: [
-          'style-loader',
+          'react-style-loader',
           'css-loader',
           {
             loader: 'postcss-loader',
@@ -91,14 +91,14 @@ const configuration = {
     new HtmlWebpackPlugin({
       inject: true,
       minify: false,
-      template: 'src/index.tsx',
+      template: 'src/index.html',
     }),
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify('development'),
     }),
   ],
   resolve: {
-    extensions: ['.js', '.ts'],
+    extensions: ['.js', '.ts', '.tsx'],
     mainFields: ['browser', 'module', 'main'],
   },
   watch: true,

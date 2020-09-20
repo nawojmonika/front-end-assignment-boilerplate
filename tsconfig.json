@@ -7,7 +7,7 @@
     "declarationMap": false,
     "importHelpers": true,
     "lib": ["DOM", "DOM.Iterable", "ES2019"],
-    "module": "commonjs",
+    "module": "es2015",
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -23,8 +23,9 @@
     "resolveJsonModule": true,
     "sourceMap": true,
     "tsBuildInfoFile": "./.cache/typescript",
-    "jsx": "react"
+    "jsx": "react",
+    "moduleResolution": "node"
   },
-  "files": ["./src/index.ts"],
+  "files": ["./src/index.tsx"],
   "include": ["./**/*"]
 }
