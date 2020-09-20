@@ -36,7 +36,7 @@ export const UploadComponent = (): JSX.Element => {
   return (
   <div className={'upload-component'}>
       {loading ? <CircularProgress /> : null}
-      {imageUrl.length ? <img src={imageUrl} /> : null}
+      {imageUrl.length === 0 ? <img id={'upload-image'} src={imageUrl} /> : null}
       <UploadButton onChange={ async (event: ChangeEvent): Promise<void> => onUpload(event)}/>
   </div>
   );
