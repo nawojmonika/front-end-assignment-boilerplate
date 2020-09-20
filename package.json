@@ -15,12 +15,14 @@
     "cssnano": "^4.1.10",
     "eslint": "^6.8.0",
     "eslint-plugin-react": "^7.20.6",
+    "express": "^4.17.1",
     "html-loader": "^0.5.5",
     "html-webpack-plugin": "^3.2.0",
     "husky": "^4.2.3",
     "jest": "^25.1.0",
     "lint-staged": "^10.0.7",
     "npm-run-all": "^4.1.5",
+    "opn": "^6.0.0",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.19.1",
     "react": "^16.13.1",
@@ -36,6 +38,7 @@
     "typescript": "^3.7.5",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11",
+    "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.3"
   },
   "engines": {
@@ -75,7 +78,7 @@
     "lint:fix": "run-p lint:*:fix",
     "lint:ts": "eslint --resolve-plugins-relative-to \"./node_modules/@ridedott/eslint-config\" \"**/*.ts\"",
     "lint:ts:fix": "eslint --fix --resolve-plugins-relative-to \"./node_modules/@ridedott/eslint-config\" \"**/*.ts\"",
-    "start": "webpack-dev-server --config ./webpack.config.js",
+    "start": "node server.js",
     "test": "jest",
     "types": "tsc --noEmit"
   },
