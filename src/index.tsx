@@ -1,5 +1,6 @@
-// CSS imported here will be bundled by webpack
+// SCSS imported here will be bundled by webpack
 import './index.scss';
+import './components/upload-component/upload-component.scss'
 // You can import any components here
 import './components/my-component/my-component';
 
