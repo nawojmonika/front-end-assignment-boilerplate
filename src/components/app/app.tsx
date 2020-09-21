@@ -8,6 +8,7 @@ import { IPrediction } from './interfaces/IPrediction';
 
 const BREEDLIST_API = 'https://dog.ceo/api/breeds/list/all';
 
+// eslint-disable-next-line max-lines-per-function
 export const App = (): JSX.Element => {
   const [currentBreedName, setBreedName] = useState('');
   // eslint-disable-next-line immutable/no-let
@@ -58,6 +59,11 @@ export const App = (): JSX.Element => {
     return names.find((name: string): boolean => isADogBreed(name, breedList)) !== undefined;
   }
 
+  const getBreedNameFromPrediction = (prediction: IPrediction, breedNameList: IBreedList): string | undefined => {
+    const names = prediction.className.toLowerCase().split(', ');
+
+    return names.find((name: string): boolean => isADogBreed(name, breedNameList));
+  }
 
   const startPredictions = async (): Promise<void> => {
     if (model !== null && imageElement.current !== null) {
@@ -65,7 +71,11 @@ export const App = (): JSX.Element => {
       const breedNamePrediction = predictions.find(isPredictionABreedName);
 
       if (breedNamePrediction !== undefined) {
-        console.log(breedNamePrediction);
+        const breedName = getBreedNameFromPrediction(breedNamePrediction, breedList);
+
+        if (breedName !== undefined) {
+          setBreedName(breedName);
+        }
       }
     }
 
