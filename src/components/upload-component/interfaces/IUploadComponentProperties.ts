@@ -1,3 +1,5 @@
+import { RefObject } from 'react';
+
 export interface IUploadComponentProperties {
-  startPredictions: Function;
+  imageElement: RefObject<HTMLImageElement>;
 }
