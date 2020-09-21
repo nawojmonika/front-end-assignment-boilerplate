@@ -1,0 +1,6 @@
+#app {
+  align-content: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}

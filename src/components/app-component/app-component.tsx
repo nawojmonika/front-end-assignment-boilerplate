@@ -5,6 +5,7 @@ import React, { useEffect, useRef as useReference, useState } from 'react';
 import { UploadComponent } from '../upload-component/upload-component';
 import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
+import { GalleryComponent } from '../gallery-component/gallery-componen';
 
 const BREEDLIST_API = 'https://dog.ceo/api/breeds/list/all';
 
@@ -92,6 +93,9 @@ export const AppComponent = (): JSX.Element => {
               component="span">
         Predict
       </Button>
+      {currentBreedName.length > 0 ?
+        <GalleryComponent breedName={currentBreedName} />
+      : null}
     </>
   )
 }

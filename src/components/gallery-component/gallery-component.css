@@ -1,0 +1,14 @@
+.gallery-component {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-content: center;
+  margin: 20px auto 0 auto;
+  width: 90vw;
+}
+.gallery-component img {
+  height: 25vw;
+  object-fit: cover;
+  width: 25vw;
+}

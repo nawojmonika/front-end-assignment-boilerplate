@@ -46,7 +46,7 @@ const configuration = {
         ],
       },
       {
-        test: /\.scss$/u,
+        test: /\.css$/u,
         use: [
           'react-style-loader',
           'css-loader',
