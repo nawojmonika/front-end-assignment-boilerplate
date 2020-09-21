@@ -1,7 +1,7 @@
 export interface IBreedListResponse {
-  message: IBreedListMessageChild;
+  message: IBreedList;
 }
 
-export interface IBreedListMessageChild {
+export interface IBreedList {
   [key: string]: Array<string>;
 }

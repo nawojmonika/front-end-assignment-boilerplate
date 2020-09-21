@@ -3,7 +3,7 @@ import * as mobilenet from '@tensorflow-models/mobilenet';
 import React, { useEffect, useRef as useReference, useState } from 'react';
 
 import { UploadComponent } from '../upload-component/upload-component';
-import { IBreedListResponse } from './interfaces/IBreedListResponse';
+import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
 
 const BREEDLIST_API = 'https://dog.ceo/api/breeds/list/all';
@@ -12,7 +12,7 @@ export const App = (): JSX.Element => {
   const [currentBreedName, setBreedName] = useState('');
   // eslint-disable-next-line immutable/no-let
   let model: mobilenet.MobileNet | null = null;
-  const breedList: string[] = [];
+  let breedList: IBreedList = {};
   const imageElement = useReference<HTMLImageElement>(null);
 
   const loadModel = async (): Promise<void> => {
@@ -29,16 +29,7 @@ export const App = (): JSX.Element => {
       method: 'GET'
     });
     const data: IBreedListResponse = await response.json();
-    const breedData = data.message;
-    Object.keys(breedData).forEach((breedKey: string): void => {
-      if (breedData[breedKey].length > 0) {
-        breedData[breedKey].forEach((name: string): void => {
-          breedList.push(`${breedKey.toLowerCase()} ${name.toLowerCase()}`);
-        })
-      } else {
-        breedList.push(breedKey.toLowerCase());
-      }
-    });
+    breedList = data.message;
   }
 
   useEffect((): void => {
@@ -46,14 +37,25 @@ export const App = (): JSX.Element => {
     loadBreedList();
   })
 
-  const isADogBreed = (name: string, breedNameList: string[]): boolean => {
-    return breedNameList.includes(name.toLowerCase());
+  const isADogBreed = (name: string, breedNameList: IBreedList): boolean => {
+    const fullName = name.toLowerCase().split(' ');
+    const breedName = fullName.pop();
+    const foundBreed = Object.keys(breedNameList).find((keyName: string): boolean => keyName === breedName);
+
+    if (foundBreed !== undefined && fullName.length > 0 && breedNameList[foundBreed].length > 0) {
+      const subBreed = fullName.pop();
+      const foundSubBreed = breedNameList[foundBreed].find((subBreedName: string) => subBreedName === subBreed);
+
+      return foundSubBreed !== undefined;
+    }
+
+    return foundBreed !== undefined;
   }
 
   const isPredictionABreedName = (prediction: IPrediction): boolean => {
-    const names = prediction.className.split(',');
+    const names = prediction.className.split(', ');
 
-    return names.find((name: string): boolean => isADogBreed(name.trim(), breedList)) !== undefined;
+    return names.find((name: string): boolean => isADogBreed(name, breedList)) !== undefined;
   }
 
 
@@ -63,13 +65,7 @@ export const App = (): JSX.Element => {
       const breedNamePrediction = predictions.find(isPredictionABreedName);
 
       if (breedNamePrediction !== undefined) {
-        const {className}  = breedNamePrediction;
-        const breedNames = className.split(',');
-        const breedName = breedNames.find((name: string): boolean => isADogBreed(name.trim(), breedList));
-
-        if (breedName !== undefined) {
-          setBreedName(breedName);
-        }
+        console.log(breedNamePrediction);
       }
     }
 
