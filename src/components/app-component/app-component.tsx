@@ -9,10 +9,11 @@ import { IPrediction } from './interfaces/IPrediction';
 const BREEDLIST_API = 'https://dog.ceo/api/breeds/list/all';
 
 // eslint-disable-next-line max-lines-per-function
-export const App = (): JSX.Element => {
+export const AppComponent = (): JSX.Element => {
   const [currentBreedName, setBreedName] = useState('');
   // eslint-disable-next-line immutable/no-let
   let model: mobilenet.MobileNet | null = null;
+  // eslint-disable-next-line immutable/no-let
   let breedList: IBreedList = {};
   const imageElement = useReference<HTMLImageElement>(null);
 

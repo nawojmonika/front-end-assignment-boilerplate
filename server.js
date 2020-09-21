@@ -65,6 +65,6 @@ app.post('/upload-image', async (req, res) => {
 app.use('/public', express.static(__dirname + '/public'));
 
 app.listen(3000, function() {
-  console.log('Example app listening on port 3000!\n');
+  console.log('Example app-component listening on port 3000!\n');
   opn(host);
 });
