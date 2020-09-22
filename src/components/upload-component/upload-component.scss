@@ -4,11 +4,17 @@
   flex-direction: column;
   justify-content: center;
 
+  label {
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+  }
+
   picture {
     margin: 10px auto;
 
     img {
-      object-fit: cover;
+      object-fit: contain;
     }
   }
 }
