@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
 import { IGalleryResponse } from './interfaces/IGalleryResponse';
