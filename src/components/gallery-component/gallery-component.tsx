@@ -1,4 +1,4 @@
-import React, { EffectCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
 import { IGalleryResponse } from './interfaces/IGalleryResponse';
@@ -40,6 +40,7 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
         fetchDogsGallery(LOAD_MORE_NUM)
       }
     }
+
     window.addEventListener('scroll', onScrollListener);
 
     return (): void => {

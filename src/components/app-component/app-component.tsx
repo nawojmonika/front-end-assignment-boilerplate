@@ -5,7 +5,7 @@ import React, { useEffect, useRef as useReference, useState } from 'react';
 import { UploadComponent } from '../upload-component/upload-component';
 import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
-import { GalleryComponent } from '../gallery-component/gallery-componen';
+import { GalleryComponent } from '../gallery-component/gallery-component';
 
 const BREEDLIST_API = 'https://dog.ceo/api/breeds/list/all';
 

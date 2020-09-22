@@ -1,7 +1,7 @@
+import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import React, { ChangeEvent, useState } from 'react';
 
-import { UploadButton } from '../upload-button-component/upload-button-component';
 import { IUploadComponentProperties } from './interfaces/IUploadComponentProperties';
 import { IUploadImageResponse } from './interfaces/IUploadImageResponse';
 
@@ -36,14 +36,26 @@ export const UploadComponent = ({imageElement}: IUploadComponentProperties): JSX
 
   return (
   <div className={'upload-component'}>
-      {loading ? <CircularProgress /> : null}
+      {loading ? <CircularProgress /> :
       <img  ref={imageElement}
             src={imageUrl}
             hidden={imageUrl.length === 0}
             width={WIDTH}
             height={HEIGHT}
-            />
-      <UploadButton onChange={ async (event: ChangeEvent): Promise<void> => onUpload(event)}/>
+      />}
+
+      <input accept="image/*"
+             hidden={true}
+             id="contained-button-file"
+             multiple
+             type="file"
+             onChange={async (event: ChangeEvent): Promise<void> => onUpload(event)}
+      />
+      <label htmlFor="contained-button-file">
+        <Button variant="contained" color="primary" component="span">
+            Upload
+        </Button>
+      </label>
   </div>
   );
 }
