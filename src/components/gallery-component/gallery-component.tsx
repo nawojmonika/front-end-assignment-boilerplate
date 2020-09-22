@@ -1,16 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
 import { IGalleryResponse } from './interfaces/IGalleryResponse';
+import { IImageListStateAction } from './interfaces/IImageListStateAction';
+import { ImageListActionType } from './interfaces/ImageListActionType';
 
 const GALLERY_API = 'https://dog.ceo/api/breed'
 const FIRST_FETCH_NUM = 9;
 const LOAD_MORE_NUM = 3;
 
-export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.Element => {
-  const [imageList, setImageList] = useState<string[]>([]);
+const imageListStateReducer = (state: string[], action: IImageListStateAction): string[] => {
+  switch (action.type) {
+    case ImageListActionType.AddToList: {
+      return [...state, ...action.payload];
+    }
 
-  const fetchDogsGallery = async (length: number): Promise<void> => {
+    case ImageListActionType.Replace: {
+      return action.payload
+    }
+
+    case ImageListActionType.ClearAll: {
+      return [];
+    }
+
+    default:
+        throw new Error('Unknown action type');
+
+  }
+}
+
+export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.Element => {
+  const [imageList, imageListDispatch] = useReducer(imageListStateReducer, []);
+
+  const fetchDogsGallery = async (length: number): Promise<string[]> => {
     const [subBreed, breed] = breedName.split(' ');
     const breedParameter = breed === undefined ? '' : `/${breed}`;
     const subBreedParameter = subBreed === undefined ? '' : `/${subBreed}`;
@@ -18,13 +40,15 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
       method: 'GET'
     });
     const data: IGalleryResponse = await response.json();
-    const newImageList = [...imageList, ...data.message];
-    setImageList(newImageList);
+
+    return data.message;
   }
 
   useEffect((): void => {
       // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    fetchDogsGallery(FIRST_FETCH_NUM);
+    fetchDogsGallery(FIRST_FETCH_NUM).then((list: string[]): void => {
+      imageListDispatch({payload: list, type: ImageListActionType.Replace})
+    });
     },
   [breedName]);
 
@@ -37,7 +61,9 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
 
       if (scrollPoint >= bodyHeight) {
         // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        fetchDogsGallery(LOAD_MORE_NUM)
+        fetchDogsGallery(LOAD_MORE_NUM).then((list: string[]): void => {
+          imageListDispatch({payload: list, type: ImageListActionType.AddToList});
+        });
       }
     }
 
