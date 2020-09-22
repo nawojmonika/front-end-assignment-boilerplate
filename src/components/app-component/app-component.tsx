@@ -6,11 +6,16 @@ import { UploadComponent } from '../upload-component/upload-component';
 import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
 import { GalleryComponent } from '../gallery-component/gallery-component';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const BREEDLIST_API = 'https://dog.ceo/api/breeds/list/all';
+const HEIGHT = 300;
+const WIDTH = 250;
 
 // eslint-disable-next-line max-lines-per-function
 export const AppComponent = (): JSX.Element => {
+  const [loading, setLoading] = useState(false);
+  const [imageUrl, setImageSrc] = useState('');
   const [currentBreedName, setBreedName] = useState('');
   // eslint-disable-next-line immutable/no-let
   let model: mobilenet.MobileNet | null = null;
@@ -85,8 +90,19 @@ export const AppComponent = (): JSX.Element => {
 
   return (
     <>
+      {loading ? <CircularProgress /> :
+        <picture>
+          <source src={imageUrl}/>
+          <img  ref={imageElement}
+                src={imageUrl}
+                hidden={imageUrl.length === 0}
+                width={WIDTH}
+                height={HEIGHT}
+          />
+        </picture>
+      }
       <h3>{currentBreedName.toUpperCase()}</h3>
-      <UploadComponent imageElement={imageElement}/>
+      <UploadComponent setImageSrc={setImageSrc} setLoading={setLoading}/>
       <Button onClick={async (): Promise<void> => startPredictions()}
               variant="contained"
               color="primary"

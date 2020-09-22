@@ -1,19 +1,13 @@
 import Button from '@material-ui/core/Button';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 
 import { IUploadComponentProperties } from './interfaces/IUploadComponentProperties';
 import { IUploadImageResponse } from './interfaces/IUploadImageResponse';
 
 const API_URL = 'http://localhost:3000';
-const HEIGHT = 300;
-const WIDTH = 250;
 
-export const UploadComponent = ({imageElement}: IUploadComponentProperties): JSX.Element => {
-  const [loading, setLoading] = useState(false);
-  const [imageUrl, setImage] = useState('');
-
-  const  onUpload = async (event: ChangeEvent): Promise<void> => {
+export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentProperties): JSX.Element => {
+  const onUpload = async (event: ChangeEvent): Promise<void> => {
     setLoading(true)
     const file = (event.target as HTMLInputElement).files?.[0];
     const formData = new FormData();
@@ -26,7 +20,7 @@ export const UploadComponent = ({imageElement}: IUploadComponentProperties): JSX
         method: 'POST'
       })
       const data: IUploadImageResponse = await response.json();
-      setImage(data.data.url);
+      setImageSrc(data.data.url);
       setLoading(false);
     } else {
       setLoading(false);
@@ -48,18 +42,6 @@ export const UploadComponent = ({imageElement}: IUploadComponentProperties): JSX
         Upload
       </Button>
     </label>
-
-    {loading ? <CircularProgress /> :
-      <picture>
-        <source src={imageUrl}/>
-        <img  ref={imageElement}
-              src={imageUrl}
-              hidden={imageUrl.length === 0}
-              width={WIDTH}
-              height={HEIGHT}
-        />
-      </picture>
-      }
   </div>
   );
 }
