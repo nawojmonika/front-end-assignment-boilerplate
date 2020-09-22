@@ -8,7 +8,7 @@ const API_URL = 'http://localhost:3000';
 
 export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentProperties): JSX.Element => {
   const onUpload = async (event: ChangeEvent): Promise<void> => {
-    setLoading(true)
+    setLoading(true);
     const file = (event.target as HTMLInputElement).files?.[0];
     const formData = new FormData();
 
@@ -19,6 +19,7 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
         body: formData,
         method: 'POST'
       })
+
       const data: IUploadImageResponse = await response.json();
       setImageSrc(data.data.url);
       setLoading(false);
