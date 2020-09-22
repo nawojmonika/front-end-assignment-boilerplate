@@ -46,10 +46,11 @@ const configuration = {
         ],
       },
       {
-        test: /\.css$/u,
+        test: /\.scss$/u,
         use: [
           'react-style-loader',
           'css-loader',
+          'sass-loader',
           {
             loader: 'postcss-loader',
             options: {

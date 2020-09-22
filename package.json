@@ -35,6 +35,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-style-loader": "^2.3.0",
+    "sass": "^1.26.11",
+    "sass-loader": "^10.0.2",
     "style-loader": "^1.1.3",
     "stylelint": "^13.2.0",
     "stylelint-config-prettier": "^8.0.1",
@@ -44,7 +46,7 @@
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.5",
     "uuid": "^8.3.0",
-    "webpack": "^4.41.6",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.11",
     "webpack-dev-middleware": "^3.7.2",
     "webpack-dev-server": "^3.10.3"

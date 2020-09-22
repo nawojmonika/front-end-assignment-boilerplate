@@ -1,8 +1,8 @@
 // CSS imported here will be bundled by webpack
-import './index.css';
-import './components/upload-component/upload-component.css';
-import './components/app-component/app-component.css';
-import './components/gallery-component/gallery-component.css';
+import './index.scss';
+import './components/upload-component/upload-component.scss';
+import './components/app-component/app-component.scss';
+import './components/gallery-component/gallery-component.scss';
 
 import React from 'react';
 import ReactDOM from 'react-dom';

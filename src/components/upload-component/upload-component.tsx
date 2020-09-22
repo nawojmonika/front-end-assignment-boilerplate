@@ -36,26 +36,30 @@ export const UploadComponent = ({imageElement}: IUploadComponentProperties): JSX
 
   return (
   <div className={'upload-component'}>
-      {loading ? <CircularProgress /> :
-      <img  ref={imageElement}
-            src={imageUrl}
-            hidden={imageUrl.length === 0}
-            width={WIDTH}
-            height={HEIGHT}
-      />}
+    <input accept="image/*"
+           hidden={true}
+           id="contained-button-file"
+           multiple
+           type="file"
+           onChange={async (event: ChangeEvent): Promise<void> => onUpload(event)}
+    />
+    <label htmlFor="contained-button-file">
+      <Button variant="contained" color="primary" component="span">
+        Upload
+      </Button>
+    </label>
 
-      <input accept="image/*"
-             hidden={true}
-             id="contained-button-file"
-             multiple
-             type="file"
-             onChange={async (event: ChangeEvent): Promise<void> => onUpload(event)}
-      />
-      <label htmlFor="contained-button-file">
-        <Button variant="contained" color="primary" component="span">
-            Upload
-        </Button>
-      </label>
+    {loading ? <CircularProgress /> :
+      <picture>
+        <source src={imageUrl}/>
+        <img  ref={imageElement}
+              src={imageUrl}
+              hidden={imageUrl.length === 0}
+              width={WIDTH}
+              height={HEIGHT}
+        />
+      </picture>
+      }
   </div>
   );
 }
