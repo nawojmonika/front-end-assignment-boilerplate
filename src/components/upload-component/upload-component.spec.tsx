@@ -8,6 +8,9 @@ import { flushPromises } from '../test-utils';
 import { UploadComponent } from './upload-component';
 
 describe('testing upload component', (): void => {
+  afterEach(() => {
+    fetchMock.restore();
+  })
   it('isLoading should be called 2 times',  async (): Promise<void> => {
     expect.assertions(1);
     const setImageSource = jest.fn();
@@ -27,5 +30,27 @@ describe('testing upload component', (): void => {
     });
     await flushPromises() ;
     expect(setLoading.mock.calls).toHaveLength(2);
+  })
+
+  it('setImageSource should be called with url returned from API',  async (): Promise<void> => {
+    expect.assertions(1);
+    const setImageSource = jest.fn();
+    const setLoading = jest.fn();
+    fetchMock.postOnce('http://localhost:3000/upload-image', {
+      data: {
+        url: 'mockUrl'
+      }
+    });
+    const component = shallow(<UploadComponent setImageSrc={setImageSource} setLoading={setLoading}/>);
+    component.find('input').simulate('change', {
+      target: {
+        files: [
+          'dummy'
+        ]
+      }
+    });
+    await flushPromises() ;
+    expect(setImageSource.mock.calls[0][0]).toBe('mockUrl');
   });
+
 });
