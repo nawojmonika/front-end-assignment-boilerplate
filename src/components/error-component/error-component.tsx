@@ -17,7 +17,7 @@ export const ErrorComponent = ({message, onClose}: IErrorComponentProperties):JS
   };
 
   return (
-    <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+    <Snackbar className={"error-component"} open={open} autoHideDuration={6000} onClose={handleClose}>
       <Alert  onClose={handleClose} severity="error">
         { message }
       </Alert >

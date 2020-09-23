@@ -20,11 +20,10 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
       formData.append( 'image', file);
 
       try {
-        const response = await fetch(`${API_URL}/upload-image1`, {
+        const response = await fetch(`${API_URL}/upload-image`, {
           body: formData,
           method: 'POST'
         })
-
         const data: IUploadImageResponse = await response.json();
         setImageSrc(data.data.url);
         setLoading(false);
