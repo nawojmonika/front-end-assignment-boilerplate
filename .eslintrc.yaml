@@ -4,7 +4,7 @@ env:
   node: true
 extends: ['@ridedott/eslint-config', 'plugin:react/recommended']
 overrides:
-  - files: ./src/**/*spec.ts
+  - files: ./src/**/*spec.tsx
     rules:
       '@typescript-eslint/no-magic-numbers': 'off'
 parserOptions:
