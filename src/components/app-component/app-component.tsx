@@ -7,8 +7,10 @@ import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';
 import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
+import { ErrorComponent } from '../error-component/error-component';
 
 const BREEDS_API = 'https://dog.ceo/api/breeds/list/all';
+const ERROR_MESSAGE = "Sorry! Couldn't find a dog in the picture";
 const HEIGHT = 300;
 const WIDTH = 250;
 
@@ -48,6 +50,7 @@ export const AppComponent = (): JSX.Element => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageSource] = useState('');
   const [currentBreedName, setBreedName] = useState('');
+  const [error, setError] = useState(false);
   // eslint-disable-next-line immutable/no-let
   let model: mobilenet.MobileNet | null = null;
   // eslint-disable-next-line immutable/no-let
@@ -81,7 +84,9 @@ export const AppComponent = (): JSX.Element => {
       const predictions = await model.classify(imageElement.current);
       const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => isPredictionABreedName(prediction, breedList));
 
-      if (breedNamePrediction !== undefined) {
+      if (breedNamePrediction === undefined) {
+        setError(true);
+      } else {
         const breedName = getBreedNameFromPrediction(breedNamePrediction, breedList);
 
         if (breedName !== undefined) {
@@ -110,9 +115,14 @@ export const AppComponent = (): JSX.Element => {
       <Button onClick={async (): Promise<void> => startPredictions()}
               variant="contained"
               color="primary"
-              component="span">
+              component="span"
+              disabled={imageUrl.length === 0}>
         Find the breed !
       </Button>
+      { error ?
+        <ErrorComponent message={ERROR_MESSAGE} onClose={(): void => setError(false)}/>
+        : null
+      }
       {currentBreedName.length > 0 ?
         <GalleryComponent breedName={currentBreedName} />
       : null}
