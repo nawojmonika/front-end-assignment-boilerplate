@@ -3,6 +3,7 @@
   "description": "Search for dogs",
   "devDependencies": {
     "@material-ui/core": "^4.11.0",
+    "@material-ui/lab": "^4.0.0-alpha.56",
     "@modelx/modelx": "^1.0.0",
     "@ridedott/eslint-config": "^1.0.0",
     "@tensorflow-models/mobilenet": "^2.0.4",

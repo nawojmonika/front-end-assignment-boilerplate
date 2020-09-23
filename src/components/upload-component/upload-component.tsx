@@ -1,12 +1,16 @@
 import Button from '@material-ui/core/Button';
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 
 import { IUploadComponentProperties } from './interfaces/IUploadComponentProperties';
 import { IUploadImageResponse } from './interfaces/IUploadImageResponse';
+import { ErrorComponent } from '../error-component/error-component';
 
 const API_URL = 'http://localhost:3000';
+const ERROR_MESSAGE = "Sorry! Couldn't upload the picture!";
 
 export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentProperties): JSX.Element => {
+  const [error, setError] = useState(false);
+
   const onUpload = async (event: ChangeEvent): Promise<void> => {
     setLoading(true);
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -15,14 +19,20 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
     if (file !== null && file !== undefined) {
       formData.append( 'image', file);
 
-      const response = await fetch(`${API_URL}/upload-image`, {
-        body: formData,
-        method: 'POST'
-      })
+      try {
+        const response = await fetch(`${API_URL}/upload-image1`, {
+          body: formData,
+          method: 'POST'
+        })
 
-      const data: IUploadImageResponse = await response.json();
-      setImageSrc(data.data.url);
-      setLoading(false);
+        const data: IUploadImageResponse = await response.json();
+        setImageSrc(data.data.url);
+        setLoading(false);
+      } catch (error_) {
+        setError(true);
+        setLoading(false);
+      }
+
     } else {
       setLoading(false);
     }
@@ -31,6 +41,10 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
 
   return (
   <div className={'upload-component'}>
+    { error ?
+      <ErrorComponent message={ERROR_MESSAGE} onClose={(): void => setError(false)}/>
+      : null
+    }
     <input accept="image/*"
            hidden={true}
            id="contained-button-file"
