@@ -50,7 +50,7 @@ describe('testing upload component', (): void => {
         ]
       }
     });
-    await flushPromises() ;
+    await flushPromises();
     expect(setLoading.mock.calls[0][0]).toBe(true);
     expect(setLoading.mock.calls[1][0]).toBe(false);
   });
