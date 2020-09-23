@@ -1,13 +1,15 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
 import { IGalleryResponse } from './interfaces/IGalleryResponse';
 import { IImageListStateAction } from './interfaces/IImageListStateAction';
 import { ImageListActionType } from './interfaces/ImageListActionType';
+import { ErrorComponent } from '../error-component/error-component';
 
 const GALLERY_API = 'https://dog.ceo/api/breed'
 const FIRST_FETCH_NUM = 9;
 const LOAD_MORE_NUM = 3;
+const ERROR_MESSAGE = "Sorry! Couldn't find any dog pictures for this breed!";
 
 const imageListStateReducer = (state: string[], action: IImageListStateAction): string[] => {
   switch (action.type) {
@@ -31,17 +33,25 @@ const imageListStateReducer = (state: string[], action: IImageListStateAction): 
 
 export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.Element => {
   const [imageList, imageListDispatch] = useReducer(imageListStateReducer, []);
+  const [error, setError] = useState(false);
 
   const fetchDogsGallery = async (length: number): Promise<string[]> => {
     const [subBreed, breed] = breedName.split(' ');
     const breedParameter = breed === undefined ? '' : `/${breed}`;
     const subBreedParameter = subBreed === undefined ? '' : `/${subBreed}`;
-    const response = await fetch(`${GALLERY_API}${breedParameter}${subBreedParameter}/images/random/${length.toString()}`, {
-      method: 'GET'
-    });
-    const data: IGalleryResponse = await response.json();
 
-    return data.message;
+    try {
+      const response = await fetch(`${GALLERY_API}${breedParameter}${subBreedParameter}/images/random/${length.toString()}`, {
+        method: 'GET'
+      });
+      const data: IGalleryResponse = await response.json();
+
+      return data.message;
+    } catch (error_) {
+      setError(true);
+    }
+
+    return [];
   }
 
   useEffect((): void => {
@@ -76,6 +86,10 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
 
   return (
     <div className={'gallery-component'}>
+      { error ?
+        <ErrorComponent message={ERROR_MESSAGE} onClose={(): void => setError(false)}/>
+        : null
+      }
       {imageList.map((url:string, index:number): JSX.Element => {
         return (
         <picture key={index}>
