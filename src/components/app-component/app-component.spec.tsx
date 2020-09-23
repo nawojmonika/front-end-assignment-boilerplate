@@ -1,4 +1,4 @@
-import { isADogBreed, isPredictionABreedName } from './app-component';
+import { getBreedNameFromPrediction, isADogBreed, isPredictionABreedName } from './app-component';
 import { IPrediction } from './interfaces/IPrediction';
 
 describe('testing isADogBreed function', (): void => {
@@ -65,7 +65,7 @@ describe('testing isPredictionABreedName function', (): void => {
       "chihuahua": []
     };
     const prediction1: IPrediction = {
-      className: "cairn",
+      className: "yorkshaire rettriver, cairn",
       probability: 0.87653
     };
     const prediction2: IPrediction = {
@@ -112,5 +112,80 @@ describe('testing isPredictionABreedName function', (): void => {
     expect(isPredictionABreedName(prediction1, breedList)).toBe(false);
     expect(isPredictionABreedName(prediction2, breedList)).toBe(false);
     expect(isPredictionABreedName(prediction3, breedList)).toBe(false);
+  });
+});
+// eslint-disable-next-line max-lines-per-function
+describe('testing getBreedNameFromPrediction function', (): void => {
+  it('should return cairn', (): void => {
+    expect.assertions(1);
+    const breedList = {
+      "bulldog": [
+        "boston",
+        "english",
+        "french"
+      ],
+      "bullterrier": [
+        "staffordshire"
+      ],
+      "cairn": [],
+      "cattledog": [
+        "australian"
+      ],
+      "chihuahua": []
+    };
+    const prediction: IPrediction = {
+      className: "cairn",
+      probability: 0.87653
+    };
+
+    expect(getBreedNameFromPrediction(prediction, breedList)).toBe("cairn");
+  });
+  it('should return staffordshire bullterrier', (): void => {
+    expect.assertions(1);
+    const breedList = {
+      "bulldog": [
+        "boston",
+        "english",
+        "french"
+      ],
+      "bullterrier": [
+        "staffordshire"
+      ],
+      "cairn": [],
+      "cattledog": [
+        "australian"
+      ],
+      "chihuahua": []
+    };
+    const prediction: IPrediction = {
+      className: "staffordshire bullterrier",
+      probability: 0.87653
+    };
+
+    expect(getBreedNameFromPrediction(prediction, breedList)).toBe("staffordshire bullterrier");
+  });
+  it('should return french bulldog', (): void => {
+    expect.assertions(1);
+    const breedList = {
+      "bulldog": [
+        "boston",
+        "english",
+        "french"
+      ],
+      "bullterrier": [
+        "staffordshire"
+      ],
+      "cairn": [],
+      "cattledog": [
+        "australian"
+      ],
+      "chihuahua": []
+    };
+    const prediction: IPrediction = {
+      className: "french bulldog, bulldog",
+      probability: 0.87653
+    };
+
+    expect(getBreedNameFromPrediction(prediction, breedList)).toBe("french bulldog");
   });
 });
