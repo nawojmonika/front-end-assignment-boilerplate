@@ -14,7 +14,7 @@ const ERROR_MESSAGE = "Sorry! Couldn't find a dog in the picture";
 const HEIGHT = 300;
 const WIDTH = 250;
 
-const isADogBreed = (name: string, breedNameList: IBreedList): boolean => {
+export const isADogBreed = (name: string, breedNameList: IBreedList): boolean => {
   const fullName = name.toLowerCase().split(' ');
   const breedName = fullName.pop();
   const foundBreed = Object.keys(breedNameList).find((keyName: string): boolean => keyName === breedName);
@@ -33,13 +33,13 @@ const isADogBreed = (name: string, breedNameList: IBreedList): boolean => {
   return foundBreed !== undefined;
 }
 
-const isPredictionABreedName = (prediction: IPrediction, breedNameList: IBreedList): boolean => {
+export const isPredictionABreedName = (prediction: IPrediction, breedNameList: IBreedList): boolean => {
   const names = prediction.className.split(', ');
 
   return names.find((name: string): boolean => isADogBreed(name, breedNameList)) !== undefined;
 }
 
-const getBreedNameFromPrediction = (prediction: IPrediction, breedNameList: IBreedList): string | undefined => {
+export const getBreedNameFromPrediction = (prediction: IPrediction, breedNameList: IBreedList): string | undefined => {
   const names = prediction.className.toLowerCase().split(', ');
 
   return names.find((name: string): boolean => isADogBreed(name, breedNameList));

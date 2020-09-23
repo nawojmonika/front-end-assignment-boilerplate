@@ -92,7 +92,7 @@ describe('testing upload component', (): void => {
       });
       await flushPromises();
       component.update();
-      expect(component.exists('.error-component')).toStrictEqual(true);
+      expect(component.exists('.error-component')).toBe(true);
     })
     });
 });
