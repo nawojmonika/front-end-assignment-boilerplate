@@ -1,15 +1,16 @@
 import 'isomorphic-form-data';
 
-import { flushPromises } from '../test-utils';
 import { mount, shallow } from 'enzyme';
 import fetchMock from 'fetch-mock'
 import React from 'react';
-
-import { UploadComponent } from './upload-component';
 import { act } from 'react-dom/test-utils';
 
+import { flushPromises } from '../test-utils';
+import { UploadComponent } from './upload-component';
+
+// eslint-disable-next-line max-lines-per-function
 describe('testing upload component', (): void => {
-  afterEach(() => {
+  afterEach((): void => {
     fetchMock.restore();
   })
   it('isLoading should be called 2 times',  async (): Promise<void> => {
@@ -76,8 +77,8 @@ describe('testing upload component', (): void => {
   });
 
   it('should show error component when API fails', async (): Promise<void> => {
+    expect.assertions(1);
     await act(async (): Promise<void> => {
-      expect.assertions(1);
       const setImageSource = jest.fn();
       const setLoading = jest.fn();
       fetchMock.post('http://localhost:3000/upload-image', 500);

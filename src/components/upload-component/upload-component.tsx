@@ -1,9 +1,9 @@
 import Button from '@material-ui/core/Button';
 import React, { ChangeEvent, useState } from 'react';
 
+import { ErrorComponent } from '../error-component/error-component';
 import { IUploadComponentProperties } from './interfaces/IUploadComponentProperties';
 import { IUploadImageResponse } from './interfaces/IUploadImageResponse';
-import { ErrorComponent } from '../error-component/error-component';
 
 const API_URL = 'http://localhost:3000';
 const ERROR_MESSAGE = "Sorry! Couldn't upload the picture!";
