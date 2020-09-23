@@ -1,1 +1,7 @@
 /* Global CSS styles applied to the whole app-component */
+#app {
+  align-content: center;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: center;
+}

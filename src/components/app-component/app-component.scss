@@ -1,6 +1,13 @@
-#app {
-  align-content: center;
+.app-component {
   display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
+  flex-direction: column;
+
+  h2, h3 {
+    text-align: center;
+  }
+
+  picture {
+    display: flex;
+    justify-content: center;
+  }
 }

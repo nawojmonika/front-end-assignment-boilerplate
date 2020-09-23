@@ -53,7 +53,7 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
     />
     <label htmlFor="contained-button-file">
       <Button variant="contained" color="primary" component="span">
-        Upload
+        Upload a photo
       </Button>
     </label>
   </div>

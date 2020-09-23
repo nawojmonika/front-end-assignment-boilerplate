@@ -89,11 +89,11 @@ export const AppComponent = (): JSX.Element => {
         }
       }
     }
-
   }
 
   return (
-    <>
+    <div className={'app-component'}>
+    <h2>Find out your dog breed!</h2>
       {loading ? <CircularProgress /> :
         <picture>
           <source src={imageUrl}/>
@@ -105,17 +105,17 @@ export const AppComponent = (): JSX.Element => {
           />
         </picture>
       }
-      <h3>{currentBreedName.toUpperCase()}</h3>
+      <h3>{currentBreedName.length > 0 ? `Your dog is a ${currentBreedName.toUpperCase()}` : '' }</h3>
       <UploadComponent setImageSrc={setImageSource} setLoading={setLoading}/>
       <Button onClick={async (): Promise<void> => startPredictions()}
               variant="contained"
               color="primary"
               component="span">
-        Predict
+        Find the breed !
       </Button>
       {currentBreedName.length > 0 ?
         <GalleryComponent breedName={currentBreedName} />
       : null}
-    </>
+    </div>
   )
 }
