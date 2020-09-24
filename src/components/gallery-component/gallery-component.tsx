@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer, useState } from 'react';
 
+import { ErrorComponent } from '../error-component/error-component';
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
 import { IGalleryResponse } from './interfaces/IGalleryResponse';
 import { IImageListStateAction } from './interfaces/IImageListStateAction';
 import { ImageListActionType } from './interfaces/ImageListActionType';
-import { ErrorComponent } from '../error-component/error-component';
 
 const GALLERY_API = 'https://dog.ceo/api/breed'
 const FIRST_FETCH_NUM = 9;
@@ -48,31 +48,31 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
 
       return data.message;
     } catch (error_) {
-      setError(true);
+      throw new Error(ERROR_MESSAGE);
     }
-
-    return [];
   }
 
   useEffect((): void => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
     fetchDogsGallery(FIRST_FETCH_NUM).then((list: string[]): void => {
       imageListDispatch({payload: list, type: ImageListActionType.Replace})
+    }, (): void => {
+      setError(true);
     });
     },
   [breedName]);
 
 
 
-  useEffect(()  => {
+  useEffect((): () => void   => {
     const onScrollListener = (): void => {
       const scrollPoint = window.innerHeight + window.scrollY;
       const bodyHeight = document.body.offsetHeight;
 
       if (scrollPoint >= bodyHeight) {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         fetchDogsGallery(LOAD_MORE_NUM).then((list: string[]): void => {
           imageListDispatch({payload: list, type: ImageListActionType.AddToList});
+        }, (): void => {
+          setError(true);
         });
       }
     }
