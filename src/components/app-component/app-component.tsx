@@ -3,6 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import React, { useEffect, useRef as useReference, useState } from 'react';
 
+import { BreedPredictionUtils } from '../../utils/breed-prediction-utils';
 import { ErrorComponent } from '../error-component/error-component';
 import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';
@@ -15,36 +16,6 @@ const GENERIC_ERROR = 'Sorry! Something went wrong. Please try again later';
 const HEIGHT = 300;
 const WIDTH = 250;
 
-export const isADogBreed = (name: string, breedNameList: IBreedList): boolean => {
-  const fullName = name.toLowerCase().split(' ');
-  const breedName = fullName.pop();
-  const foundBreed = Object.keys(breedNameList).find((keyName: string): boolean => keyName === breedName);
-
-  if (foundBreed !== undefined && fullName.length > 0) {
-    if (breedNameList[foundBreed].length > 0) {
-      const subBreed = fullName.pop();
-      const foundSubBreed = breedNameList[foundBreed].find((subBreedName: string): boolean => subBreedName === subBreed);
-
-      return foundSubBreed !== undefined;
-    }
-
-    return false;
-  }
-
-  return foundBreed !== undefined;
-}
-
-export const isPredictionABreedName = (prediction: IPrediction, breedNameList: IBreedList): boolean => {
-  const names = prediction.className.split(', ');
-
-  return names.find((name: string): boolean => isADogBreed(name, breedNameList)) !== undefined;
-}
-
-export const getBreedNameFromPrediction = (prediction: IPrediction, breedNameList: IBreedList): string | undefined => {
-  const names = prediction.className.toLowerCase().split(', ');
-
-  return names.find((name: string): boolean => isADogBreed(name, breedNameList));
-}
 
 // eslint-disable-next-line max-lines-per-function
 export const AppComponent = (): JSX.Element => {
@@ -102,12 +73,12 @@ export const AppComponent = (): JSX.Element => {
     if (model !== null && imageElement.current !== null) {
 
       const predictions = await model.classify(imageElement.current);
-      const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => isPredictionABreedName(prediction, breedList));
+      const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => BreedPredictionUtils.isPredictionABreedName(prediction, breedList));
 
       if (breedNamePrediction === undefined) {
         setErrorMessage(NO_DOG_FOUND);
       } else {
-        const breedName = getBreedNameFromPrediction(breedNamePrediction, breedList);
+        const breedName = BreedPredictionUtils.getBreedNameFromPrediction(breedNamePrediction, breedList);
 
         if (breedName !== undefined) {
           setBreedName(breedName);
