@@ -1,8 +1,9 @@
 import {
   IBreedList,
   IBreedListResponse,
-} from '../../components/app-component/interfaces/IBreedListResponse';
+} from './interfaces/IBreedListResponse';
 import { IDogGalleryResponse } from './interfaces/IDogGalleryResponse';
+
 const DOG_API = 'https://dog.ceo/api';
 
 export const getAllBreedList = async (): Promise<IBreedList | void> => {

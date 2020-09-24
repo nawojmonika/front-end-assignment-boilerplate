@@ -10,7 +10,7 @@ import {
 import { ErrorComponent } from '../error-component/error-component';
 import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';
-import { IBreedList } from './interfaces/IBreedListResponse';
+import { IBreedList } from '../../utils/dog-api-utils/interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
 import { getAllBreedList } from '../../utils/dog-api-utils/dog-api-utils';
 
