@@ -61,8 +61,6 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
     },
   [breedName]);
 
-
-
   useEffect((): () => void   => {
     const onScrollListener = (): void => {
       const scrollPoint = window.innerHeight + window.scrollY;
@@ -83,11 +81,14 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
       window.removeEventListener('scroll', onScrollListener)}
   });
 
+  const handleErrorClose = (): void => {
+    setError(false);
+  }
 
   return (
     <div className={'gallery-component'}>
       { error ?
-        <ErrorComponent message={ERROR_MESSAGE} onClose={(): void => setError(false)}/>
+        <ErrorComponent message={ERROR_MESSAGE} onClose={handleErrorClose}/>
         : null
       }
       {imageList.map((url:string, index:number): JSX.Element => {

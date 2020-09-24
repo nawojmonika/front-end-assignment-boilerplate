@@ -6,9 +6,9 @@ import { IUploadComponentProperties } from './interfaces/IUploadComponentPropert
 import { IUploadImageResponse } from './interfaces/IUploadImageResponse';
 
 const API_URL = 'http://localhost:3000';
-const ERROR_MESSAGE = "Sorry! Couldn't upload the picture!";
+const ERROR_MESSAGE = 'Sorry! Couldn\'t upload the picture!';
 
-export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentProperties): JSX.Element => {
+export const UploadComponent = ({ setImageSrc, setLoading }: IUploadComponentProperties): JSX.Element => {
   const [error, setError] = useState(false);
 
   const onUpload = async (event: ChangeEvent): Promise<void> => {
@@ -17,13 +17,13 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
     const formData = new FormData();
 
     if (file !== null && file !== undefined) {
-      formData.append( 'image', file);
+      formData.append('image', file);
 
       try {
         const response = await fetch(`${API_URL}/upload-image`, {
           body: formData,
-          method: 'POST'
-        })
+          method: 'POST',
+        });
         const data: IUploadImageResponse = await response.json();
         setImageSrc(data.data.url);
         setLoading(false);
@@ -35,27 +35,34 @@ export const UploadComponent = ({setImageSrc, setLoading}: IUploadComponentPrope
     } else {
       setLoading(false);
     }
+  };
 
+  const handleInputChange = async (event: ChangeEvent): Promise<void> => {
+    await onUpload(event);
+  }
+
+  const handleErrorClose = (): void => {
+    setError(false);
   }
 
   return (
-  <div className={'upload-component'}>
-    { error ?
-      <ErrorComponent message={ERROR_MESSAGE} onClose={(): void => setError(false)}/>
-      : null
-    }
-    <input accept="image/*"
-           hidden={true}
-           id="contained-button-file"
-           multiple
-           type="file"
-           onChange={async (event: ChangeEvent): Promise<void> => onUpload(event)}
-    />
-    <label htmlFor="contained-button-file">
-      <Button variant="contained" color="primary" component="span">
-        Upload a photo
-      </Button>
-    </label>
-  </div>
+    <div className={'upload-component'}>
+      {error ?
+        <ErrorComponent message={ERROR_MESSAGE} onClose={handleErrorClose}/>
+        : null
+      }
+      <input accept="image/*"
+             hidden={true}
+             id="contained-button-file"
+             multiple
+             type="file"
+             onChange={handleInputChange}
+      />
+      <label htmlFor="contained-button-file">
+        <Button variant="contained" color="primary" component="span">
+          Upload a photo
+        </Button>
+      </label>
+    </div>
   );
-}
+};

@@ -116,6 +116,14 @@ export const AppComponent = (): JSX.Element => {
     }
   }
 
+  const handleStartPredictions = async (): Promise<void> => {
+    await startPredictions();
+  }
+
+  const handleCloseError = (): void => {
+    setErrorMessage('');
+  }
+
   return (
     <div className={'app-component'}>
          <h2>Find out your dog breed!</h2>
@@ -132,7 +140,7 @@ export const AppComponent = (): JSX.Element => {
          }
          <h3>{currentBreedName.length > 0 ? `The breed is: ${currentBreedName.toUpperCase()}` : ''}</h3>
          <UploadComponent setImageSrc={setImageSource} setLoading={setPictureLoading}/>
-         <Button onClick={async (): Promise<void> => startPredictions()}
+         <Button onClick={handleStartPredictions}
                  variant="contained"
                  color="primary"
                  component="span"
@@ -141,7 +149,7 @@ export const AppComponent = (): JSX.Element => {
            Find the breed !
          </Button>
          {errorMessage.length > 0 ?
-           <ErrorComponent message={errorMessage} onClose={(): void => setErrorMessage('')}/>
+           <ErrorComponent message={errorMessage} onClose={handleCloseError}/>
            : null
          }
          {currentBreedName.length > 0 ?
