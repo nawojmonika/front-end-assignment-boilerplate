@@ -100,6 +100,7 @@ export const AppComponent = (): JSX.Element => {
 
   const startPredictions = async (): Promise<void> => {
     if (model !== null && imageElement.current !== null) {
+
       const predictions = await model.classify(imageElement.current);
       const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => isPredictionABreedName(prediction, breedList));
 
