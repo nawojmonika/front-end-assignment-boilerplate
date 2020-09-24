@@ -138,7 +138,7 @@ export const AppComponent = (): JSX.Element => {
              />
            </picture>
          }
-         <h3>{currentBreedName.length > 0 ? `Your dog is a ${currentBreedName.toUpperCase()}` : ''}</h3>
+         <h3>{currentBreedName.length > 0 ? `The breed is: ${currentBreedName.toUpperCase()}` : ''}</h3>
          <UploadComponent setImageSrc={setImageSource} setLoading={setPictureLoading}/>
          <Button onClick={async (): Promise<void> => startPredictions()}
                  variant="contained"

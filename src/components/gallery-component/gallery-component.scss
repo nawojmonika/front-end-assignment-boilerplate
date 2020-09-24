@@ -2,13 +2,31 @@
   align-items: center;
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
   margin: 20px auto 0 auto;
   width: 90vw;
+
+  @media screen and (min-width: 540px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media screen and (min-width: 960px) {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 .gallery-component img {
-  height: 25vw;
+  height: 80vw;
+  width: 80vw;
   object-fit: cover;
-  width: 25vw;
+
+
+  @media screen and (min-width: 540px) {
+    height: 40vw;
+    width: 40vw;
+  }
+
+  @media screen and (min-width: 960px) {
+    height: 25vw;
+    width: 25vw;
+  }
 }
