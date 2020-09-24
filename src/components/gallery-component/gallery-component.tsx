@@ -39,13 +39,12 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
     const [subBreed, breed] = breedName.split(' ');
     const breedParameter = breed === undefined ? '' : `/${breed}`;
     const subBreedParameter = subBreed === undefined ? '' : `/${subBreed}`;
-
     try {
       const response = await fetch(`${GALLERY_API}${breedParameter}${subBreedParameter}/images/random/${length.toString()}`, {
         method: 'GET'
       });
+      console.log(`${GALLERY_API}${breedParameter}${subBreedParameter}/images/random/${length.toString()}`)
       const data: IGalleryResponse = await response.json();
-
       return data.message;
     } catch (error_) {
       throw new Error(ERROR_MESSAGE);
