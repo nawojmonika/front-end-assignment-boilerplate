@@ -1,7 +1,6 @@
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as mobilenet from '@tensorflow-models/mobilenet';
-import { MobileNet } from '@tensorflow-models/mobilenet';
 import React, { useEffect, useRef as useReference, useState } from 'react';
 
 import { ErrorComponent } from '../error-component/error-component';
@@ -72,7 +71,7 @@ export const AppComponent = (): JSX.Element => {
         return loadedModel;
       };
 
-      loadModel().then((loadedModel: MobileNet): void => {
+      loadModel().then((loadedModel: mobilenet.MobileNet): void => {
         setModel(loadedModel);
       }, (): void => {
         setErrorMessage(GENERIC_ERROR);
