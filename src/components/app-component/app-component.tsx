@@ -48,7 +48,6 @@ export const getBreedNameFromPrediction = (prediction: IPrediction, breedNameLis
 
 // eslint-disable-next-line max-lines-per-function
 export const AppComponent = (): JSX.Element => {
-  const [appLoading, setAppLoading] = useState(true);
   const [pictureLoading, setPictureLoading] = useState(false);
   const [imageUrl, setImageSource] = useState('');
   const [currentBreedName, setBreedName] = useState('');
@@ -56,12 +55,6 @@ export const AppComponent = (): JSX.Element => {
   const [breedList, setBreedList] = useState<IBreedList>({});
   const [model, setModel] = useState<mobilenet.MobileNet | null>(null);
   const imageElement = useReference<HTMLImageElement>(null);
-
-  useEffect((): void => {
-    if (model !== null && Object.keys(breedList).length > 0) {
-      setAppLoading(false);
-    }
-  }, [model, breedList]);
 
   useEffect((): void => {
     if (model === null) {
@@ -124,8 +117,6 @@ export const AppComponent = (): JSX.Element => {
 
   return (
     <div className={'app-component'}>
-      {appLoading ? <CircularProgress/> :
-       <>
          <h2>Find out your dog breed!</h2>
          {pictureLoading ? <CircularProgress /> :
            <picture>
@@ -144,6 +135,7 @@ export const AppComponent = (): JSX.Element => {
                  variant="contained"
                  color="primary"
                  component="span"
+                 className={'app-component--predict-button'}
                  disabled={imageUrl.length === 0}>
            Find the breed !
          </Button>
@@ -154,8 +146,6 @@ export const AppComponent = (): JSX.Element => {
          {currentBreedName.length > 0 ?
            <GalleryComponent breedName={currentBreedName} />
            : null}
-       </>
-      }
     </div>
   )
 }
