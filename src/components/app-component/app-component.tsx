@@ -1,16 +1,18 @@
 import { Button } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import * as mobilenet from '@tensorflow-models/mobilenet';
+import { MobileNet } from '@tensorflow-models/mobilenet';
 import React, { useEffect, useRef as useReference, useState } from 'react';
 
+import { ErrorComponent } from '../error-component/error-component';
 import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';
 import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
-import { ErrorComponent } from '../error-component/error-component';
 
 const BREEDS_API = 'https://dog.ceo/api/breeds/list/all';
-const ERROR_MESSAGE = "Sorry! Couldn't find a dog in the picture";
+const NO_DOG_FOUND = "Sorry! Couldn't find a dog in the picture";
+const GENERIC_ERROR = 'Sorry! Something went wrong. Please try again later';
 const HEIGHT = 300;
 const WIDTH = 250;
 
@@ -47,37 +49,62 @@ export const getBreedNameFromPrediction = (prediction: IPrediction, breedNameLis
 
 // eslint-disable-next-line max-lines-per-function
 export const AppComponent = (): JSX.Element => {
-  const [loading, setLoading] = useState(false);
+  const [appLoading, setAppLoading] = useState(true);
+  const [pictureLoading, setPictureLoading] = useState(false);
   const [imageUrl, setImageSource] = useState('');
   const [currentBreedName, setBreedName] = useState('');
-  const [error, setError] = useState(false);
-  // eslint-disable-next-line immutable/no-let
-  let model: mobilenet.MobileNet | null = null;
-  // eslint-disable-next-line immutable/no-let
-  let breedList: IBreedList = {};
+  const [errorMessage, setErrorMessage] = useState('');
+  const [breedList, setBreedList] = useState<IBreedList>({});
+  const [model, setModel] = useState<mobilenet.MobileNet | null>(null);
   const imageElement = useReference<HTMLImageElement>(null);
 
-  const loadModel = async (): Promise<void> => {
-    model = await mobilenet.load();
-  }
+  useEffect((): void => {
+    if (model !== null && Object.keys(breedList).length > 0) {
+      setAppLoading(false);
+    }
+  }, [model, breedList]);
 
   useEffect((): void => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    loadModel()
-  })
+    if (model === null) {
+      const loadModel = async (): Promise<mobilenet.MobileNet> => {
+        const loadedModel = await mobilenet.load();
 
-  const loadBreedList = async (): Promise<void> => {
-    const response = await fetch(`${BREEDS_API}`, {
-      method: 'GET'
-    });
-    const data: IBreedListResponse = await response.json();
-    breedList = data.message;
-  }
+        return loadedModel;
+      };
+
+      loadModel().then((loadedModel: MobileNet): void => {
+        setModel(loadedModel);
+      }, (): void => {
+        setErrorMessage(GENERIC_ERROR);
+      });
+    }
+  }, []);
 
   useEffect((): void => {
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    loadBreedList();
-  })
+    if (Object.keys(breedList).length === 0) {
+      const loadBreedList = async (): Promise<IBreedList | void> => {
+        try {
+          const response = await fetch(`${BREEDS_API}`, {
+            method: 'GET'
+          });
+          const data: IBreedListResponse = await response.json();
+
+          return data.message;
+        } catch (error) {
+          throw new Error(GENERIC_ERROR);
+        }
+      }
+
+      loadBreedList().then((response: IBreedList | void):void => {
+        if (response !== undefined) {
+          setBreedList(response);
+        }
+      }, (): void => {
+        setErrorMessage(GENERIC_ERROR);
+      });
+    }
+
+  }, []);
 
   const startPredictions = async (): Promise<void> => {
     if (model !== null && imageElement.current !== null) {
@@ -85,7 +112,7 @@ export const AppComponent = (): JSX.Element => {
       const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => isPredictionABreedName(prediction, breedList));
 
       if (breedNamePrediction === undefined) {
-        setError(true);
+        setErrorMessage(NO_DOG_FOUND);
       } else {
         const breedName = getBreedNameFromPrediction(breedNamePrediction, breedList);
 
@@ -98,34 +125,38 @@ export const AppComponent = (): JSX.Element => {
 
   return (
     <div className={'app-component'}>
-    <h2>Find out your dog breed!</h2>
-      {loading ? <CircularProgress /> :
-        <picture>
-          <source src={imageUrl}/>
-          <img  ref={imageElement}
-                src={imageUrl}
-                hidden={imageUrl.length === 0}
-                width={WIDTH}
-                height={HEIGHT}
-          />
-        </picture>
+      {appLoading ? <CircularProgress/> :
+       <>
+         <h2>Find out your dog breed!</h2>
+         {pictureLoading ? <CircularProgress /> :
+           <picture>
+             <source src={imageUrl}/>
+             <img  ref={imageElement}
+                   src={imageUrl}
+                   hidden={imageUrl.length === 0}
+                   width={WIDTH}
+                   height={HEIGHT}
+             />
+           </picture>
+         }
+         <h3>{currentBreedName.length > 0 ? `Your dog is a ${currentBreedName.toUpperCase()}` : ''}</h3>
+         <UploadComponent setImageSrc={setImageSource} setLoading={setPictureLoading}/>
+         <Button onClick={async (): Promise<void> => startPredictions()}
+                 variant="contained"
+                 color="primary"
+                 component="span"
+                 disabled={imageUrl.length === 0}>
+           Find the breed !
+         </Button>
+         {errorMessage.length > 0 ?
+           <ErrorComponent message={errorMessage} onClose={(): void => setErrorMessage('')}/>
+           : null
+         }
+         {currentBreedName.length > 0 ?
+           <GalleryComponent breedName={currentBreedName} />
+           : null}
+       </>
       }
-      <h3>{currentBreedName.length > 0 ? `Your dog is a ${currentBreedName.toUpperCase()}` : '' }</h3>
-      <UploadComponent setImageSrc={setImageSource} setLoading={setLoading}/>
-      <Button onClick={async (): Promise<void> => startPredictions()}
-              variant="contained"
-              color="primary"
-              component="span"
-              disabled={imageUrl.length === 0}>
-        Find the breed !
-      </Button>
-      { error ?
-        <ErrorComponent message={ERROR_MESSAGE} onClose={(): void => setError(false)}/>
-        : null
-      }
-      {currentBreedName.length > 0 ?
-        <GalleryComponent breedName={currentBreedName} />
-      : null}
     </div>
   )
 }
