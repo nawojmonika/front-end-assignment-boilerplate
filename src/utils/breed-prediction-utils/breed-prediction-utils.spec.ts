@@ -1,5 +1,9 @@
 import { IPrediction } from '../../components/app-component/interfaces/IPrediction';
-import { BreedPredictionUtils } from './breed-prediction-utils';
+import {
+  getBreedNameFromPrediction,
+  isADogBreed,
+  isPredictionABreedName,
+} from './breed-prediction-utils';
 
 describe('testing isADogBreed function', (): void => {
   it('should return true in all cases', (): void => {
@@ -11,13 +15,9 @@ describe('testing isADogBreed function', (): void => {
       cattledog: ['australian'],
       chihuahua: [],
     };
-    expect(BreedPredictionUtils.isADogBreed('Boston Bulldog', breedList)).toBe(
-      true,
-    );
-    expect(BreedPredictionUtils.isADogBreed('bullterrier', breedList)).toBe(
-      true,
-    );
-    expect(BreedPredictionUtils.isADogBreed('ChiHuAhua', breedList)).toBe(true);
+    expect(isADogBreed('Boston Bulldog', breedList)).toBe(true);
+    expect(isADogBreed('bullterrier', breedList)).toBe(true);
+    expect(isADogBreed('ChiHuAhua', breedList)).toBe(true);
   });
   it('should return false in all cases', (): void => {
     expect.assertions(3);
@@ -28,11 +28,9 @@ describe('testing isADogBreed function', (): void => {
       cattledog: ['australian'],
       chihuahua: [],
     };
-    expect(BreedPredictionUtils.isADogBreed('Monitor', breedList)).toBe(false);
-    expect(BreedPredictionUtils.isADogBreed('Doge', breedList)).toBe(false);
-    expect(BreedPredictionUtils.isADogBreed('French cairn', breedList)).toBe(
-      false,
-    );
+    expect(isADogBreed('Monitor', breedList)).toBe(false);
+    expect(isADogBreed('Doge', breedList)).toBe(false);
+    expect(isADogBreed('French cairn', breedList)).toBe(false);
   });
 });
 
@@ -58,15 +56,9 @@ describe('testing isPredictionABreedName function', (): void => {
       className: 'bulldog',
       probability: 0.87653,
     };
-    expect(
-      BreedPredictionUtils.isPredictionABreedName(prediction1, breedList),
-    ).toBe(true);
-    expect(
-      BreedPredictionUtils.isPredictionABreedName(prediction2, breedList),
-    ).toBe(true);
-    expect(
-      BreedPredictionUtils.isPredictionABreedName(prediction3, breedList),
-    ).toBe(true);
+    expect(isPredictionABreedName(prediction1, breedList)).toBe(true);
+    expect(isPredictionABreedName(prediction2, breedList)).toBe(true);
+    expect(isPredictionABreedName(prediction3, breedList)).toBe(true);
   });
   it('should return false in all cases', (): void => {
     expect.assertions(3);
@@ -89,15 +81,9 @@ describe('testing isPredictionABreedName function', (): void => {
       className: 'alpaca',
       probability: 0.087653,
     };
-    expect(
-      BreedPredictionUtils.isPredictionABreedName(prediction1, breedList),
-    ).toBe(false);
-    expect(
-      BreedPredictionUtils.isPredictionABreedName(prediction2, breedList),
-    ).toBe(false);
-    expect(
-      BreedPredictionUtils.isPredictionABreedName(prediction3, breedList),
-    ).toBe(false);
+    expect(isPredictionABreedName(prediction1, breedList)).toBe(false);
+    expect(isPredictionABreedName(prediction2, breedList)).toBe(false);
+    expect(isPredictionABreedName(prediction3, breedList)).toBe(false);
   });
 });
 
@@ -116,9 +102,7 @@ describe('testing getBreedNameFromPrediction function', (): void => {
       probability: 0.87653,
     };
 
-    expect(
-      BreedPredictionUtils.getBreedNameFromPrediction(prediction, breedList),
-    ).toBe('cairn');
+    expect(getBreedNameFromPrediction(prediction, breedList)).toBe('cairn');
   });
   it('should return staffordshire bullterrier', (): void => {
     expect.assertions(1);
@@ -134,9 +118,9 @@ describe('testing getBreedNameFromPrediction function', (): void => {
       probability: 0.87653,
     };
 
-    expect(
-      BreedPredictionUtils.getBreedNameFromPrediction(prediction, breedList),
-    ).toBe('staffordshire bullterrier');
+    expect(getBreedNameFromPrediction(prediction, breedList)).toBe(
+      'staffordshire bullterrier',
+    );
   });
   it('should return french bulldog', (): void => {
     expect.assertions(1);
@@ -152,8 +136,8 @@ describe('testing getBreedNameFromPrediction function', (): void => {
       probability: 0.87653,
     };
 
-    expect(
-      BreedPredictionUtils.getBreedNameFromPrediction(prediction, breedList),
-    ).toBe('french bulldog');
+    expect(getBreedNameFromPrediction(prediction, breedList)).toBe(
+      'french bulldog',
+    );
   });
 });

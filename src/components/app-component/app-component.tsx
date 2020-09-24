@@ -3,14 +3,17 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import React, { useEffect, useRef as useReference, useState } from 'react';
 
-import { BreedPredictionUtils } from '../../utils/breed-prediction-utils/breed-prediction-utils';
+import {
+  getBreedNameFromPrediction,
+  isPredictionABreedName,
+} from '../../utils/breed-prediction-utils/breed-prediction-utils';
 import { ErrorComponent } from '../error-component/error-component';
 import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';
-import { IBreedList, IBreedListResponse } from './interfaces/IBreedListResponse';
+import { IBreedList } from './interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
+import { getAllBreedList } from '../../utils/dog-api-utils/dog-api-utils';
 
-const BREEDS_API = 'https://dog.ceo/api/breeds/list/all';
 const NO_DOG_FOUND = "Sorry! Couldn't find a dog in the picture";
 const GENERIC_ERROR = 'Sorry! Something went wrong. Please try again later';
 const HEIGHT = 300;
@@ -45,20 +48,7 @@ export const AppComponent = (): JSX.Element => {
 
   useEffect((): void => {
     if (Object.keys(breedList).length === 0) {
-      const loadBreedList = async (): Promise<IBreedList | void> => {
-        try {
-          const response = await fetch(`${BREEDS_API}`, {
-            method: 'GET'
-          });
-          const data: IBreedListResponse = await response.json();
-
-          return data.message;
-        } catch (error) {
-          throw new Error(GENERIC_ERROR);
-        }
-      }
-
-      loadBreedList().then((response: IBreedList | void):void => {
+      getAllBreedList().then((response: IBreedList | void):void => {
         if (response !== undefined) {
           setBreedList(response);
         }
@@ -73,12 +63,12 @@ export const AppComponent = (): JSX.Element => {
     if (model !== null && imageElement.current !== null) {
 
       const predictions = await model.classify(imageElement.current);
-      const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => BreedPredictionUtils.isPredictionABreedName(prediction, breedList));
+      const breedNamePrediction = predictions.find((prediction: IPrediction): boolean => isPredictionABreedName(prediction, breedList));
 
       if (breedNamePrediction === undefined) {
         setErrorMessage(NO_DOG_FOUND);
       } else {
-        const breedName = BreedPredictionUtils.getBreedNameFromPrediction(breedNamePrediction, breedList);
+        const breedName = getBreedNameFromPrediction(breedNamePrediction, breedList);
 
         if (breedName !== undefined) {
           setBreedName(breedName);

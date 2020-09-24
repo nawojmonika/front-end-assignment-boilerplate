@@ -2,11 +2,10 @@ import React, { useEffect, useReducer, useState } from 'react';
 
 import { ErrorComponent } from '../error-component/error-component';
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
-import { IGalleryResponse } from './interfaces/IGalleryResponse';
 import { IImageListStateAction } from './interfaces/IImageListStateAction';
 import { ImageListActionType } from './interfaces/ImageListActionType';
+import { fetchDogsGallery } from '../../utils/dog-api-utils/dog-api-utils';
 
-const GALLERY_API = 'https://dog.ceo/api/breed'
 const FIRST_FETCH_NUM = 9;
 const LOAD_MORE_NUM = 3;
 const ERROR_MESSAGE = "Sorry! Couldn't find any dog pictures for this breed!";
@@ -35,25 +34,8 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
   const [imageList, imageListDispatch] = useReducer(imageListStateReducer, []);
   const [error, setError] = useState(false);
 
-  const fetchDogsGallery = async (length: number): Promise<string[]> => {
-    const [subBreed, breed] = breedName.split(' ');
-    const breedParameter = breed === undefined ? '' : `/${breed}`;
-    const subBreedParameter = subBreed === undefined ? '' : `/${subBreed}`;
-
-    try {
-      const response = await fetch(`${GALLERY_API}${breedParameter}${subBreedParameter}/images/random/${length.toString()}`, {
-        method: 'GET'
-      });
-      const data: IGalleryResponse = await response.json();
-
-      return data.message;
-    } catch (error_) {
-      throw new Error(ERROR_MESSAGE);
-    }
-  }
-
   useEffect((): void => {
-    fetchDogsGallery(FIRST_FETCH_NUM).then((list: string[]): void => {
+    fetchDogsGallery(breedName, FIRST_FETCH_NUM).then((list: string[]): void => {
       imageListDispatch({payload: list, type: ImageListActionType.Replace})
     }, (): void => {
       setError(true);
@@ -67,7 +49,7 @@ export const GalleryComponent = ({breedName}: IGaleryComponentProperties): JSX.E
       const bodyHeight = document.body.offsetHeight;
 
       if (scrollPoint >= bodyHeight) {
-        fetchDogsGallery(LOAD_MORE_NUM).then((list: string[]): void => {
+        fetchDogsGallery(breedName, LOAD_MORE_NUM).then((list: string[]): void => {
           imageListDispatch({payload: list, type: ImageListActionType.AddToList});
         }, (): void => {
           setError(true);
