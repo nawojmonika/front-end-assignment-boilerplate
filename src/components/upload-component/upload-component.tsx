@@ -1,11 +1,10 @@
 import Button from '@material-ui/core/Button';
 import React, { ChangeEvent, useState } from 'react';
 
+import { uploadPicture } from '../../utils/local-api-utils/local-api-utils';
 import { ErrorComponent } from '../error-component/error-component';
 import { IUploadComponentProperties } from './interfaces/IUploadComponentProperties';
-import { IUploadImageResponse } from './interfaces/IUploadImageResponse';
 
-const API_URL = 'http://localhost:3000';
 const ERROR_MESSAGE = 'Sorry! Couldn\'t upload the picture!';
 
 export const UploadComponent = ({ setImageSrc, setLoading }: IUploadComponentProperties): JSX.Element => {
@@ -20,12 +19,8 @@ export const UploadComponent = ({ setImageSrc, setLoading }: IUploadComponentPro
       formData.append('image', file);
 
       try {
-        const response = await fetch(`${API_URL}/upload-image`, {
-          body: formData,
-          method: 'POST',
-        });
-        const data: IUploadImageResponse = await response.json();
-        setImageSrc(data.data.url);
+        const imageUrl = await uploadPicture(formData);
+        setImageSrc(imageUrl);
         setLoading(false);
       } catch (error_) {
         setError(true);
