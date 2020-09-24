@@ -3,7 +3,7 @@ import fetchMock from 'fetch-mock'
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { flushPromises } from '../test-utils';
+import { flushPromises } from '../../utils/test-utils';
 import { GalleryComponent } from './gallery-component';
 
 describe('testing gallery component', (): void => {

@@ -1,5 +1,5 @@
-import { IBreedList } from '../components/app-component/interfaces/IBreedListResponse';
-import { IPrediction } from '../components/app-component/interfaces/IPrediction';
+import { IBreedList } from '../../components/app-component/interfaces/IBreedListResponse';
+import { IPrediction } from '../../components/app-component/interfaces/IPrediction';
 
 export const BreedPredictionUtils = {
   getBreedNameFromPrediction(

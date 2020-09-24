@@ -1,4 +1,4 @@
-import { IPrediction } from '../components/app-component/interfaces/IPrediction';
+import { IPrediction } from '../../components/app-component/interfaces/IPrediction';
 import { BreedPredictionUtils } from './breed-prediction-utils';
 
 describe('testing isADogBreed function', (): void => {

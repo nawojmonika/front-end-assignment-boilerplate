@@ -1,4 +1,4 @@
-import '../test-utils';
+import '../../utils/test-utils';
 
 import { shallow } from 'enzyme';
 import React from 'react';

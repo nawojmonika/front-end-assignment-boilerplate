@@ -3,7 +3,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import React, { useEffect, useRef as useReference, useState } from 'react';
 
-import { BreedPredictionUtils } from '../../utils/breed-prediction-utils';
+import { BreedPredictionUtils } from '../../utils/breed-prediction-utils/breed-prediction-utils';
 import { ErrorComponent } from '../error-component/error-component';
 import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';

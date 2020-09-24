@@ -5,7 +5,7 @@ import fetchMock from 'fetch-mock';
 import React from 'react';
 import { act } from 'react-dom/test-utils';
 
-import { flushPromises } from '../test-utils';
+import { flushPromises } from '../../utils/test-utils';
 import { UploadComponent } from './upload-component';
 
 // eslint-disable-next-line max-lines-per-function
