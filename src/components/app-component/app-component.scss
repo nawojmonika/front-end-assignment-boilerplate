@@ -10,5 +10,8 @@
   picture {
     display: flex;
     justify-content: center;
+    img {
+      object-fit: contain;
+    }
   }
 }

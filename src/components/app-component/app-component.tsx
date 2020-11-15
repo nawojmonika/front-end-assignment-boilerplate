@@ -7,12 +7,12 @@ import {
   getBreedNameFromPrediction,
   isPredictionABreedName,
 } from '../../utils/breed-prediction-utils/breed-prediction-utils';
+import { getAllBreedList } from '../../utils/dog-api-utils/dog-api-utils';
+import { IBreedList } from '../../utils/dog-api-utils/interfaces/IBreedListResponse';
 import { ErrorComponent } from '../error-component/error-component';
 import { GalleryComponent } from '../gallery-component/gallery-component';
 import { UploadComponent } from '../upload-component/upload-component';
-import { IBreedList } from '../../utils/dog-api-utils/interfaces/IBreedListResponse';
 import { IPrediction } from './interfaces/IPrediction';
-import { getAllBreedList } from '../../utils/dog-api-utils/dog-api-utils';
 
 const NO_DOG_FOUND = "Sorry! Couldn't find a dog in the picture";
 const GENERIC_ERROR = 'Sorry! Something went wrong. Please try again later';
