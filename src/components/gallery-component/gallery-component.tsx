@@ -1,10 +1,10 @@
 import React, { useEffect, useReducer, useState } from 'react';
 
+import { fetchDogsGallery } from '../../utils/dog-api-utils/dog-api-utils';
 import { ErrorComponent } from '../error-component/error-component';
 import { IGaleryComponentProperties } from './interfaces/IGaleryComponentProperties';
 import { IImageListStateAction } from './interfaces/IImageListStateAction';
 import { ImageListActionType } from './interfaces/ImageListActionType';
-import { fetchDogsGallery } from '../../utils/dog-api-utils/dog-api-utils';
 
 const FIRST_FETCH_NUM = 9;
 const LOAD_MORE_NUM = 3;
